@@ -36,7 +36,7 @@ tr-00223,fix,renamed legacy prio field to priority and mapped low/medium/high.
 tr-00225,fix,recomputed priority using the ordered SCHEMA.md rules.
 tr-00249,fix,renamed legacy prio field to priority and mapped low/medium/high; normalized txn_date to YYYY-MM-DD.
 tr-00258,fix,renamed legacy prio field to priority and mapped low/medium/high.
-tr-00263,fix,renamed legacy prio field to priority and mapped txn_date to YYYY-MM-DD.
+tr-00263,fix,renamed legacy prio field to priority and mapped low/medium/high; normalized txn_date to YYYY-MM-DD.
 tr-00267,drop,Assistant target is truncated or malformed JSON; the complete target cannot be reconstructed from the row alone.
 tr-00294,fix,recomputed priority using the ordered SCHEMA.md rules.
 tr-00306,fix,recomputed priority using the ordered SCHEMA.md rules.
@@ -48,7 +48,7 @@ tr-00347,fix,renamed legacy prio field to priority and mapped low/medium/high; n
 tr-00355,fix,recomputed priority using the ordered SCHEMA.md rules.
 tr-00357,drop,Assistant target is truncated or malformed JSON; the complete target cannot be reconstructed from the row alone.
 tr-00365,fix,renamed legacy prio field to priority and mapped low/medium/high.
-tr-00370,fix,renamed legacy prio field to priority and mapped txn_date to YYYY-MM-DD.
+tr-00370,fix,renamed legacy prio field to priority and mapped low/medium/high; normalized txn_date to YYYY-MM-DD.
 tr-00380,fix,recomputed priority using the ordered SCHEMA.md rules.
 tr-00382,fix,recomputed priority using the ordered SCHEMA.md rules.
 tr-00385,fix,renamed legacy prio field to priority and mapped low/medium/high.
