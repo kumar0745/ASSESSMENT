@@ -1,0 +1,53 @@
+id,ticket,gold_json,raw_model_output,wrong_fields,explanation_to_write
+dv-00011,"Received: 2026-06-17 (Wed)
+Source: email
+
+Subject: Problem with NimbusPay
+
+URGENT!!
+Why am I missing my refund. App version is 4.2.7. ₹84,137 was the value. This happened yesterday. ID: np3333133441
+
+Regards,
+Pooja Nair","{""category"": ""refund"", ""priority"": ""P1"", ""amount_paise"": 8413700, ""txn_date"": ""2026-06-16"", ""txn_id"": ""NP3333133441"", ""channel"": null, ""language"": ""en"", ""needs_human"": true}","{""category"": ""refund"", ""priority"": ""P2"", ""amount_paise"": 8413700, ""txn_date"": ""2026-06-16"", ""txn_id"": ""NP3333133441"", ""channel"": null, ""language"": ""en"", ""needs_human"": false}","needs_human,priority","The model missed that the transaction amount is ₹84,137, which exceeds the ₹50,000 P1 threshold. Under the schema, P1 also requires needs_human=true; the word URGENT is not needed to reach that rule."
+dv-00012,"Received: 2026-07-22 (Wed)
+Source: app-chat
+
+Hi, Can I have a refund for one of your products? It was a card transaction. ID: NP5989878271 Amount: 237415 rupees It took place 3 days ago. Thanks.","{""category"": ""refund"", ""priority"": ""P1"", ""amount_paise"": 23741500, ""txn_date"": ""2026-07-19"", ""txn_id"": ""NP5989878271"", ""channel"": ""card"", ""language"": ""en"", ""needs_human"": true}","{""category"": ""refund"", ""priority"": ""P2"", ""amount_paise"": 23741500, ""txn_date"": ""2026-07-19"", ""txn_id"": ""NP5989878271"", ""channel"": ""card"", ""language"": ""en"", ""needs_human"": false}","needs_human,priority","The refund amount is ₹237,415, above the ₹50,000 P1 threshold. The model assigned P2 and needs_human=false instead of applying the ordered amount threshold and P1 human-escalation rule."
+dv-00018,"Received: 2026-07-31 (Fri)
+Source: app-chat
+
+Sir, Order cnacel kar diya tha par refnud abhi tak nahi aaya. App version 5.0.19 hai. Netbanking se hua tha. kal ki baat hai. Reference NP 9137703117 hai. Total 4.2k ka tha. Dhanyavaad.","{""category"": ""refund"", ""priority"": ""P3"", ""amount_paise"": 420000, ""txn_date"": ""2026-07-30"", ""txn_id"": ""NP9137703117"", ""channel"": ""netbanking"", ""language"": ""hi-en"", ""needs_human"": false}","{""category"": ""refund"", ""priority"": ""P2"", ""amount_paise"": 420000, ""txn_date"": ""2026-07-30"", ""txn_id"": ""NP9137703117"", ""channel"": ""netbanking"", ""language"": ""hi-en"", ""needs_human"": false}",priority,"The refund amount is ₹4,200, below the ₹5,000 threshold for a P2 refund and below the ₹50,000 P1 threshold. P3 is therefore correct; the model over-prioritized this lower-value refund."
+dv-00034,"Received: 2026-08-22 (Sat)
+Source: twitter
+
+@NimbusPayCare Shopping ka payment decline ho gaya lekin bank ne paise kaat liye. Rs. 36737 ka transaction tha. Txn id np 94424 25625. Wallet se hua tha.","{""category"": ""payment_failed"", ""priority"": ""P2"", ""amount_paise"": 3673700, ""txn_date"": null, ""txn_id"": ""NP9442425625"", ""channel"": ""wallet"", ""language"": ""hi-en"", ""needs_human"": false}","{""category"": ""payment_failed"", ""priority"": ""P1"", ""amount_paise"": 3673700, ""txn_date"": null, ""txn_id"": ""NP9442425625"", ""channel"": ""wallet"", ""language"": ""hi-en"", ""needs_human"": true}","needs_human,priority","This is a failed payment with ₹36,737, which meets the P2 threshold (₹5,000 or more) but not P1 (₹50,000 or more). There is no repeat-contact wording, so needs_human should remain false. The model over-escalated it to P1."
+dv-00037,"Received: 2026-09-07 (Mon)
+Source: app-chat
+
+My transaction history is looking a little off. I have been charged twice for multiple different purchases, and would like to have those duplicate charges refunded. The txn id is np 42846 07517. Transaction date 6 Sep. 284669 rupees was the value. Waiting for your reply.","{""category"": ""refund"", ""priority"": ""P1"", ""amount_paise"": 28466900, ""txn_date"": ""2026-09-06"", ""txn_id"": ""NP4284607517"", ""channel"": null, ""language"": ""en"", ""needs_human"": true}","{""category"": ""refund"", ""priority"": ""P3"", ""amount_paise"": 28466900, ""txn_date"": ""2026-09-06"", ""txn_id"": ""NP4284607517"", ""channel"": null, ""language"": ""en"", ""needs_human"": false}","needs_human,priority","The refund amount is ₹284,669, above the ₹50,000 P1 threshold. P1 makes needs_human=true. The model missed both the P1 threshold and the consequent escalation flag."
+dv-00042,"Received: 2026-08-28 (Fri)
+Source: email
+
+Subject: Complaint
+
+Dear NimbusPay support,
+On the card that is coming, what's the tracking info? This is my second complaint on the same issue. Using the Android app.
+
+Regards,
+Imran Khan","{""category"": ""other"", ""priority"": ""P3"", ""amount_paise"": null, ""txn_date"": null, ""txn_id"": null, ""channel"": null, ""language"": ""en"", ""needs_human"": true}","{""category"": ""refund"", ""priority"": ""P3"", ""amount_paise"": null, ""txn_date"": null, ""txn_id"": null, ""channel"": null, ""language"": ""en"", ""needs_human"": true}",category,"The customer asks for card-delivery tracking, which belongs to other, not refund; transaction fields are null. However, the customer says this is the second complaint, so needs_human=true. The model confused the word card with a card-payment/refund issue."
+dv-00044,"Received: 2026-08-01 (Sat)
+Source: app-chat
+
+I can't see my refund in my history. Amount: Rs. 8377 Mode: debit card. You can check NP 1458501327. Dated 27/07/2026. This is my second complaint on the same issue.","{""category"": ""refund"", ""priority"": ""P2"", ""amount_paise"": 837700, ""txn_date"": ""2026-07-27"", ""txn_id"": ""NP1458501327"", ""channel"": ""card"", ""language"": ""en"", ""needs_human"": true}","{""category"": ""refund"", ""priority"": ""P3"", ""amount_paise"": 837700, ""txn_date"": ""2026-07-27"", ""txn_id"": ""NP1458501327"", ""channel"": ""card"", ""language"": ""en"", ""needs_human"": true}",priority,"The refund amount is ₹8,377, so it meets P2 (at least ₹5,000) but not P1 (at least ₹50,000). The earlier complaint makes needs_human=true without changing the priority to P1. The model missed the value-based P2 threshold."
+dv-00046,"Received: 2026-07-30 (Thu)
+Source: ivr-transcript
+
+[IVR transcript] Dear NimbusPay support, A payment on my statement is wrong. My earlier ticket number is #11447. FYI my daily limit is Rs. 796. I have already written 4 times about this. It is ₹537 in total.","{""category"": ""fraud"", ""priority"": ""P1"", ""amount_paise"": 53700, ""txn_date"": null, ""txn_id"": null, ""channel"": null, ""language"": ""en"", ""needs_human"": true}","{""category"": ""refund"", ""priority"": ""P3"", ""amount_paise"": 53700, ""txn_date"": null, ""txn_id"": null, ""channel"": null, ""language"": ""en"", ""needs_human"": true}","category,priority","The gold label treats the incorrect statement payment as fraud, which takes precedence and forces P1; the previous four contacts also require needs_human=true. The message is linguistically ambiguous because it does not explicitly say the customer did not make, approve or recognize the transaction, making this a useful boundary case for the fraud definition."
+dv-00054,"Received: 2026-06-18 (Thu)
+Source: twitter
+
+@NimbusPayCare Payment prcoess mein atak gaya hai aur paise kat chuke hain. Mera phone Realme 11 hai. Wallet se hua tha. 6893 rupaye kat gaye. NP7714659811 check kar lo.","{""category"": ""payment_failed"", ""priority"": ""P2"", ""amount_paise"": 689300, ""txn_date"": null, ""txn_id"": ""NP7714659811"", ""channel"": ""wallet"", ""language"": ""hi-en"", ""needs_human"": false}","{""category"": ""fraud"", ""priority"": ""P1"", ""amount_paise"": 689300, ""txn_date"": null, ""txn_id"": ""NP7714659811"", ""channel"": ""wallet"", ""language"": ""hi-en"", ""needs_human"": true}","category,needs_human,priority","The ticket describes a payment stuck in processing after the customer initiated it and the money was debited. That matches payment_failed, not fraud: no unauthorized or unrecognized transaction is alleged. The gold priority is P2 for ₹6,893; the model incorrectly inferred fraud and escalated to P1."
+dv-00056,"Received: 2026-08-29 (Sat)
+Source: app-chat
+
+Why was I double charged? Using the Android app. That was yesterday. It is Rs 44,206.75 in total. Please look into it.","{""category"": ""refund"", ""priority"": ""P2"", ""amount_paise"": 4420675, ""txn_date"": ""2026-08-28"", ""txn_id"": null, ""channel"": null, ""language"": ""en"", ""needs_human"": false}","{""category"": ""refund"", ""priority"": ""P1"", ""amount_paise"": 4420675, ""txn_date"": ""2026-08-28"", ""txn_id"": null, ""channel"": null, ""language"": ""en"", ""needs_human"": true}","needs_human,priority","The duplicate charge is a refund case for ₹44,206.75. It exceeds ₹5,000 but is below ₹50,000, so priority is P2; no earlier-contact statement means needs_human=false. The model over-escalated the amount/duplicate-charge language to P1."
