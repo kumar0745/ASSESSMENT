@@ -8,31 +8,33 @@
 
 ## A. Data audit and cleaning
 
-The supplied split contains 1,445 training records, 200 development records and 400 unlabelled test records. The local data audit retained 1,420 parseable training rows and dropped 25 truncated/malformed assistant targets. The cleaning pipeline recorded 157 unique repaired rows and 182 row-level cleaning actions in `cleaning_log.csv`. Audited issue groups included legacy `prio` keys/values, non-ISO dates, noncanonical transaction IDs, priority-rule disagreements and `needs_human` disagreements; issue groups overlap and must not be added as if they were distinct rows.
+The supplied split contains 1,445 training records, 200 development records and 400 unlabelled test records. The data audit retained 1,420 parseable training rows and dropped 25 truncated/malformed assistant targets. The cleaning pipeline recorded 157 unique repaired rows and 182 row-level cleaning actions in `cleaning_log.csv`. Audited issue groups included legacy `prio` keys/values, non-ISO dates, noncanonical transaction IDs, priority-rule disagreements and `needs_human` disagreements; issue groups overlap and must not be added as if they were distinct rows.
 
 Cleaning applies the supplied schema/business rules to training labels only. Priority precedence is applied in the specified order, monetary values are represented in paise, date and transaction-ID formats are normalized, and `needs_human` is recalculated from P1 or explicit repeat-contact wording. Truncated targets are dropped rather than guessed.
 
 ## B. Runtime and execution evidence
 
-The Colab screenshot dated 2026-11-14 shows an NVIDIA Tesla T4, driver 580.82.07 and CUDA 13.0. The audit screenshot shows 1,420 parseable raw training rows, 1,420 cleaned rows, 200 development rows and 400 test rows. The training-progress screenshot shows `E1_raw_qlora_r8` at step 71/264 (epoch 0.79/3); the displayed training loss at step 70 is 0.0487. This is an in-progress run, not a completed experiment result.
+The Colab GPU screenshot shows an NVIDIA Tesla T4, driver 580.82.07 and CUDA 13.0. The audit screenshot shows 1,420 parseable raw training rows, 1,420 cleaned rows, 200 development rows and 400 test rows. A later training screenshot shows a progress indicator of 264/264 with the adjacent epoch label rendered as 2/3. The visible loss table includes 0.032300 at step 260; a separate capture shows 0.038500 at step 260. These are training-loss observations, not dev-set metrics. The screenshots do not show a completed experiment results table.
 
-## C. Baseline and fine-tuning results
+## C. Baselines and controlled experiments
 
-| Run | Status | Dev exact match | Mean field accuracy | JSON valid |
+| Run | Status from available evidence | Dev exact match | Mean field accuracy | JSON valid |
 |---|---|---:|---:|---:|
 | Base model, fixed prompt | Pending measurement | — | — | — |
 | Base model, rules-in-prompt reference | Pending measurement | — | — | — |
-| E1 raw, QLoRA rank 8 | In progress in captured screenshot | — | — | — |
-| E1 cleaned, QLoRA rank 8 | Pending | — | — | — |
-| E2 cleaned, FP16 LoRA rank 8 | Pending | — | — | — |
-| E3 cleaned, QLoRA rank 16 | Pending | — | — | — |
-| E4 cleaned, balanced QLoRA rank 8 | Pending | — | — | — |
+| E1 raw, QLoRA rank 8 | Training progress captured; dev result not shown | — | — | — |
+| E1 cleaned, QLoRA rank 8 | Pending verification | — | — | — |
+| E2 cleaned, FP16 LoRA rank 8 | Pending verification | — | — | — |
+| E3 cleaned, QLoRA rank 16 | Pending verification | — | — | — |
+| E4 cleaned, balanced QLoRA rank 8 | Pending verification | — | — | — |
 
-The notebook contains five training configurations for four controlled comparisons: raw versus cleaned data, FP16 LoRA versus QLoRA, rank 8 versus rank 16, and ordinary versus category-balanced sampling. No baseline or dev accuracy is claimed until the corresponding evaluation completes. The previous failed attempt was caused by a CPU-only `bitsandbytes` build and an unavailable 8-bit optimizer symbol; the revised notebook checks CUDA/NF4 before training and uses the PyTorch AdamW optimizer. The live screenshot now shows the T4 runtime and a training progress bar, but final success is not yet established.
+The notebook contains five training configurations for four controlled comparisons: raw versus cleaned data, FP16 LoRA versus QLoRA, rank 8 versus rank 16, and ordinary versus category-balanced sampling. The screenshots show progress through training and into the experiment-results/error-analysis section, but do not show the evaluated result table, the selected best run or completed dev metrics. Do not submit this progress report with pending cells as final results.
+
+The revised runtime setup addressed the earlier CPU-only bitsandbytes import issue and uses the PyTorch AdamW optimizer. The later screenshot shows Transformers warnings because sampling is disabled while temperature/top-p/top-k values are set; these are generation-configuration warnings and are not evidence of a training failure.
 
 ## D. Error analysis
 
-The notebook is configured to create a development-set error-analysis file after a successful experiment. At least ten observed failures must be reviewed and explained using the actual predictions and gold labels. No hypothetical failures are presented here as measured findings. Complete this section from `dev_error_analysis_first10.csv` after evaluation.
+The notebook is configured to create a development-set error-analysis file after evaluation. At least ten observed failures must be reviewed and explained using actual predictions and gold labels. No hypothetical failures are presented here as measured findings. Complete this section from the generated error-analysis CSV after the notebook finishes.
 
 ## What I would do with one more week
 
@@ -45,4 +47,4 @@ The notebook is configured to create a development-set error-analysis file after
 
 ChatGPT assisted with interpreting the assessment specification, preparing and debugging the notebook, explaining runtime errors and drafting/reviewing documentation. Training, model evaluation and test predictions are intended to be generated by the notebook in Colab. The candidate must inspect, verify and be able to explain all actual results before submission.
 
-> **Submission status:** This report is a progress report, not yet the final assessment report. Replace pending entries with measured results, add evidence-based error explanations, and include the final adapter and exactly 400 test predictions after the complete Colab run.
+> **Submission status:** This is an execution-progress report, not yet the final three-page assessment report. Replace pending entries with measured results, add evidence-based error explanations, and include the final adapter, executed notebook with outputs and exactly 400 test predictions after the complete Colab run.
