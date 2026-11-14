@@ -5,45 +5,57 @@
 **Method:** PEFT LoRA / QLoRA  
 **Target runtime:** Google Colab NVIDIA T4
 
-This repository contains the assessment notebook, schema, scorer, data-cleaning log, report and execution evidence.
+This repository contains the assessment notebook package, schema, scorer, training-data cleaning log, report and current Colab execution evidence.
 
 ## Run the notebook
 
-1. Open `notebook.ipynb` in Google Colab (or extract it from `notebook.ipynb.gz` with `python extract_notebook.py`).
-2. Select Runtime → Change runtime type → T4 GPU.
-3. Run from the first cell. The setup checks CUDA and runs a real NF4 smoke test before training.
-4. Upload the original `training_assessment.zip` when prompted. The source assessment archive and train/dev/test inputs are intentionally excluded from this repository.
-5. Let all baseline, training, experiment, dev-evaluation and test-inference cells complete.
-6. Download the executed notebook with cell outputs, the generated submission ZIP, and inspect every required output.
+1. Download/clone this private repository.
+2. Extract the notebook:
+   ```bash
+   python extract_notebook.py
+   ```
+   This creates `notebook.ipynb` from the compressed `notebook.ipynb.gz`.
+3. Upload `notebook.ipynb` to Google Colab and select Runtime → Change runtime type → T4 GPU.
+4. Download the original `training_assessment.zip` from the assessment materials. It is intentionally not committed to GitHub.
+5. Run the notebook from the first cell and upload `training_assessment.zip` when prompted.
+6. Let the baseline, training, experiment, development-evaluation and test-inference sections finish.
+7. Download the **executed** notebook from Colab (File → Download → Download .ipynb) so the notebook submitted contains the real cell outputs.
 
-## Verified progress (2026-11-14)
+## Current verified progress — 14 November 2026
 
-The supplied screenshots show:
-- CUDA runtime detected: NVIDIA Tesla T4, driver 580.82.07, CUDA 13.0.
-- Dataset audit: 1,420 parseable raw training rows, 1,420 cleaned rows, 200 development rows and 400 test rows.
-- Cleaning log generated, with visible sample fixes/drops.
-- Training was still **in progress** in the captured screenshot: `E1_raw_qlora_r8`, step 71/264, epoch 0.79/3. The screenshot shows training loss 0.0487 at step 70.
+The attached evidence collage `execution_evidence.jpg` and `COLAB_EXECUTION_EVIDENCE.md` document the screenshots supplied during the Colab run:
 
-These screenshots prove environment setup, data audit and a training-in-progress state only. They do **not** establish a completed experiment, final model selection, final accuracy or successful hidden-test inference.
+- GPU: NVIDIA Tesla T4; driver 580.82.07; CUDA 13.0.
+- Audit: 1,420 parseable raw training rows, 1,420 cleaned rows, 200 dev rows and 400 test rows.
+- A cleaning-log preview was displayed with `id`, `action` and `reason` columns.
+- Training run `E1_raw_qlora_r8` was still **in progress** in the screenshot: step 71/264, epoch 0.79/3. The visible training loss was 0.0487 at step 70.
 
-## Assessment submission status
+These screenshots verify the GPU environment, data audit and an in-progress training run only. They do not demonstrate completed experiments or final model performance.
 
-The following are the required final deliverables:
-- `README.md`: model ID, 4-bit loading choice and one-line measured best result.
-- `adapter/adapter_config.json` and `adapter/adapter_model.safetensors`: final PEFT adapter.
-- `notebook.ipynb`: executed Colab notebook **with outputs** and reproducible final model/test prediction workflow.
-- `report.md` or `report.pdf`: maximum 3 pages with audit, experiment table, error analysis, next steps and AI-tool disclosure.
-- `cleaning_log.csv`: `id,action,reason`.
-- `predictions_test.jsonl`: exactly one raw model output per test ID (400 lines).
+## Required final assessment files
 
-At the moment, GPU training has been observed in progress, but completed experiment metrics, final adapter, final 400 predictions and the executed notebook with saved outputs have not yet been supplied. They are deliberately not fabricated or represented as complete. After the Colab run finishes, replace/update the relevant files using the actual generated artifacts and measured results.
+The assessment instructions require:
 
-## Evidence
+1. `README.md` — base model ID, whether it was loaded in 4-bit, and a one-line measured best result.
+2. `adapter/adapter_config.json` and `adapter/adapter_model.safetensors` — final PEFT adapter.
+3. `notebook.ipynb` — executed Colab notebook **with outputs**, reproducible top-to-bottom on a fresh T4 runtime.
+4. `report.md` or `report.pdf` — maximum three pages; audit findings, experiment table, error analysis, next steps and AI-tool disclosure.
+5. `cleaning_log.csv` — columns `id,action,reason`.
+6. `predictions_test.jsonl` — exactly one raw model output per test row (400 rows).
 
-- `evidence_gpu.jpg` — T4 GPU and CUDA runtime.
-- `evidence_audit.jpg` — data audit and cleaning log.
-- `evidence_training_progress.jpg` — E1 training progress (not final result).
+## Status of remaining final artifacts
+
+At the time of the screenshots, training had not finished. The repository therefore does not yet claim final baseline scores, completed experiment measurements, a selected best run, a final adapter, or 400 test predictions. These must be generated by completing the Colab run and then added to the repository. The current `report.md` is a progress report with pending measurements; update it from the actual generated metrics and review at least ten real dev errors before submission.
+
+## Repository contents
+
+- `notebook.ipynb.gz` + `extract_notebook.py` — complete notebook source in compressed form and extraction helper.
+- `SCHEMA.md` — assessment schema and business rules.
+- `score.py` — prediction scorer.
+- `cleaning_log.csv` — training-data cleaning audit.
+- `report.md` — assessment report, to be finalized with measured results.
+- `COLAB_EXECUTION_EVIDENCE.md` and `execution_evidence.jpg` — supplied screenshot evidence.
 
 ## Data and submission hygiene
 
-Keep this repository private until the assessment deadline rules permit publication. Do not commit the original assessment ZIP, raw train/dev/test datasets or base-model weights. Upload the final adapter and predictions only as permitted by the assessment instructions.
+Keep the repository private until the assessment deadline rules permit publication. Do not commit the original assessment ZIP, raw train/dev/test datasets or base-model weights. Upload the trained adapter and test predictions only as permitted by the assessment instructions.
