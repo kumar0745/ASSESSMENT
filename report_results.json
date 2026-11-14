@@ -1,0 +1,147 @@
+{
+  "model_id": "Qwen/Qwen2.5-1.5B-Instruct",
+  "baseline_fixed_prompt": {
+    "n": 200,
+    "json_valid": 0,
+    "exact_match": 0,
+    "mean_field_accuracy": 0
+  },
+  "baseline_rules_prompt_reference_only": {
+    "n": 200,
+    "json_valid": 0.14,
+    "exact_match": 0.005,
+    "mean_field_accuracy": 0.086875
+  },
+  "selected_run": {
+    "name": "E2_clean_lora_fp16_r8",
+    "data": "clean",
+    "load_in_4bit": false,
+    "rank": 8,
+    "balanced_sampling": false,
+    "trainable_parameters": 9232384,
+    "dev_json_valid": 1,
+    "dev_exact_match": 0.865,
+    "dev_mean_field_accuracy": 0.97375,
+    "peak_gpu_memory_gb": 3.8985090255737305,
+    "training_minutes": 18.145969578883342
+  },
+  "experiments": [
+    {
+      "name": "E1_raw_qlora_r8",
+      "status": "completed",
+      "dev_exact_match": 0.745,
+      "dev_mean_field_accuracy": 0.956875,
+      "dev_json_valid": 1,
+      "peak_gpu_memory_gb": 3.0042266845703125,
+      "training_minutes": 23.56465268346666
+    },
+    {
+      "name": "E1_clean_qlora_r8",
+      "status": "completed",
+      "dev_exact_match": 0.835,
+      "dev_mean_field_accuracy": 0.971875,
+      "dev_json_valid": 1,
+      "peak_gpu_memory_gb": 3.0026397705078125,
+      "training_minutes": 23.89140353583334
+    },
+    {
+      "name": "E2_clean_lora_fp16_r8",
+      "status": "completed",
+      "dev_exact_match": 0.865,
+      "dev_mean_field_accuracy": 0.97375,
+      "dev_json_valid": 1,
+      "peak_gpu_memory_gb": 3.8985090255737305,
+      "training_minutes": 18.145969578883342
+    },
+    {
+      "name": "E3_clean_qlora_r16",
+      "status": "completed",
+      "dev_exact_match": 0.815,
+      "dev_mean_field_accuracy": 0.968125,
+      "dev_json_valid": 1,
+      "peak_gpu_memory_gb": 3.065765380859375,
+      "training_minutes": 24.298446122566688
+    },
+    {
+      "name": "E4_clean_qlora_r8_balanced",
+      "status": "completed",
+      "dev_exact_match": 0.785,
+      "dev_mean_field_accuracy": 0.960625,
+      "dev_json_valid": 1,
+      "peak_gpu_memory_gb": 3.0026397705078125,
+      "training_minutes": 24.425257748733355
+    }
+  ],
+  "weakest_fields": [
+    {
+      "field": "priority",
+      "accuracy": 0.9
+    },
+    {
+      "field": "needs_human",
+      "accuracy": 0.94
+    },
+    {
+      "field": "category",
+      "accuracy": 0.97
+    },
+    {
+      "field": "amount_paise",
+      "accuracy": 0.985
+    },
+    {
+      "field": "txn_date",
+      "accuracy": 0.995
+    },
+    {
+      "field": "txn_id",
+      "accuracy": 1
+    },
+    {
+      "field": "channel",
+      "accuracy": 1
+    },
+    {
+      "field": "language",
+      "accuracy": 1
+    }
+  ],
+  "weakest_categories": [
+    {
+      "category": "refund",
+      "n": 55,
+      "exact_match": 0.7636363636363637,
+      "mean_field_accuracy": 0.9568181818181818
+    },
+    {
+      "category": "fraud",
+      "n": 15,
+      "exact_match": 0.8,
+      "mean_field_accuracy": 0.9416666666666667
+    },
+    {
+      "category": "payment_failed",
+      "n": 53,
+      "exact_match": 0.8301886792452831,
+      "mean_field_accuracy": 0.9669811320754718
+    }
+  ],
+  "incorrect_dev_rows": 27,
+  "total_dev_rows": 200,
+  "test_predictions": {
+    "count": 400,
+    "unique_ids": 400,
+    "outer_keys": [
+      "id",
+      "output"
+    ],
+    "inner_key_validation": "400/400 exact 8-key structure",
+    "reproducibility": "20/20 identical outputs"
+  },
+  "known_raw_prediction_issue": {
+    "id": "ts-00001",
+    "field": "txn_date",
+    "raw_value": "2026-07-00",
+    "action": "preserved raw output; invalid calendar date disclosed; no postprocessing"
+  }
+}
