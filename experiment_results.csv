@@ -1,0 +1,6 @@
+experiment,status,dev_exact_match,dev_mean_field_accuracy,peak_gpu_memory_gb,training_minutes,notes
+E1_raw_qlora_r8,completed,0.745,0.956875,3.0042266845703125,23.56465268346666,data=raw; 4bit=True; rank=8; balanced=False; trainable=9232384
+E1_clean_qlora_r8,completed,0.835,0.971875,3.0026397705078125,23.89140353583334,data=clean; 4bit=True; rank=8; balanced=False; trainable=9232384
+E2_clean_lora_fp16_r8,completed,0.865,0.97375,3.8985090255737305,18.145969578883342,data=clean; 4bit=False; rank=8; balanced=False; trainable=9232384
+E3_clean_qlora_r16,completed,0.815,0.968125,3.065765380859375,24.298446122566688,data=clean; 4bit=True; rank=16; balanced=False; trainable=18464768
+E4_clean_qlora_r8_balanced,completed,0.785,0.960625,3.0026397705078125,24.425257748733355,data=clean; 4bit=True; rank=8; balanced=True; trainable=9232384
