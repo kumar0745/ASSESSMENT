@@ -1,12 +1,15 @@
-# Original assessment pack contains train/dev/test data; never commit it.
+# Original assessment pack and raw source datasets: do not commit.
 training_assessment.zip
 candidate_pack/
 data/
+train.jsonl
+dev.jsonl
+test_inputs.jsonl
 *.jsonl
 !predictions_test.jsonl
 
-# Generated models, outputs and caches.
-adapter/
+# Generated runtime folders/caches. The final adapter/ is intentionally NOT ignored:
+# the assessment requires adapter/adapter_config.json and adapter_model.safetensors.
 outputs/
 work/
 experiments/
