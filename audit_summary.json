@@ -1,0 +1,50 @@
+{
+  "input_rows": 1445,
+  "clean_rows": 1420,
+  "dropped_rows": 25,
+  "fixed_rows": 157,
+  "cleaning_log_rows": 182,
+  "malformed_assistant_json_ids": [
+    "tr-00060",
+    "tr-00095",
+    "tr-00125",
+    "tr-00172",
+    "tr-00267",
+    "tr-00357",
+    "tr-00478",
+    "tr-00497",
+    "tr-00558",
+    "tr-00605",
+    "tr-00674",
+    "tr-00735",
+    "tr-00765",
+    "tr-00809",
+    "tr-00824",
+    "tr-00846",
+    "tr-00958",
+    "tr-00960",
+    "tr-00975",
+    "tr-00978",
+    "tr-00979",
+    "tr-00980",
+    "tr-01070",
+    "tr-01087",
+    "tr-01199"
+  ],
+  "legacy_prio_rows": 70,
+  "noncanonical_date_rows": 30,
+  "noncanonical_txn_id_rows": 20,
+  "priority_mismatches_repaired": 65,
+  "needs_human_mismatches_repaired": 4,
+  "field_fix_counts": {
+    "priority": 65,
+    "prio->priority": 70,
+    "txn_date": 30,
+    "txn_id": 20,
+    "needs_human": 4
+  },
+  "split_rows": {
+    "dev": 200,
+    "test": 400
+  }
+}
