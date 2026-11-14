@@ -3,51 +3,46 @@
 **Candidate:** [Enter your name]  
 **Role:** ML Intern – LLM Fine-Tuning, VIMA3YA  
 **Base model:** `Qwen/Qwen2.5-1.5B-Instruct`  
-**Method:** PEFT LoRA / QLoRA  
-**Target hardware:** Google Colab free-tier NVIDIA T4
+**Fine-tuning:** PEFT LoRA / QLoRA  
+**Runtime:** Google Colab NVIDIA Tesla T4
 
 ## A. Data audit and cleaning
 
-The supplied training split contains 1,445 records. Twenty-five assistant targets are truncated or malformed JSON and were dropped because a complete target cannot be reconstructed safely. The remaining 1,420 records were retained. The cleaning pipeline reads only `train.jsonl` and applies the provided `SCHEMA.md` rules; development and test rows are never used to create training labels.
+The supplied split contains 1,445 training records, 200 development records and 400 unlabelled test records. The local data audit retained 1,420 parseable training rows and dropped 25 truncated/malformed assistant targets. The cleaning pipeline recorded 157 unique repaired rows and 182 row-level cleaning actions in `cleaning_log.csv`. Audited issue groups included legacy `prio` keys/values, non-ISO dates, noncanonical transaction IDs, priority-rule disagreements and `needs_human` disagreements; issue groups overlap and must not be added as if they were distinct rows.
 
-The audit identified 70 legacy `prio` fields with `low/medium/high` values, 30 non-ISO transaction dates, 20 noncanonical transaction IDs, 65 priority conflicts with the schema rules and four `needs_human` conflicts. These issue counts overlap. In total, 157 unique rows were fixed, producing 182 row-level cleaning-log entries; 25 rows were dropped. The complete `id,action,reason` log is in `cleaning_log.csv`.
+Cleaning applies the supplied schema/business rules to training labels only. Priority precedence is applied in the specified order, monetary values are represented in paise, date and transaction-ID formats are normalized, and `needs_human` is recalculated from P1 or explicit repeat-contact wording. Truncated targets are dropped rather than guessed.
 
-Priority was recomputed in the documented order: fraud, disputed amount at least ₹50,000, or a legal threat gives P1; otherwise account access, or payment-failed/refund at least ₹5,000, gives P2; all remaining cases are P3. `needs_human` is true for P1 or explicit repeat-contact wording. Existing null transaction fields were not filled by guessing.
+## B. Runtime and execution evidence
 
-## B. Baselines
+The Colab screenshot dated 2026-11-14 shows an NVIDIA Tesla T4, driver 580.82.07 and CUDA 13.0. The audit screenshot shows 1,420 parseable raw training rows, 1,420 cleaned rows, 200 development rows and 400 test rows. The training-progress screenshot shows `E1_raw_qlora_r8` at step 71/264 (epoch 0.79/3); the displayed training loss at step 70 is 0.0487. This is an in-progress run, not a completed experiment result.
 
-| Baseline | Dev exact match | Mean field accuracy | JSON valid |
-|---|---:|---:|---:|
-| Base model, fixed prompt | **[Fill from run]** | **[Fill]** | **[Fill]** |
-| Base model, schema rules in prompt (reference only) | **[Fill from run]** | **[Fill]** | **[Fill]** |
+## C. Baseline and fine-tuning results
 
-The rule-augmented prompt is a reference baseline only. Fine-tuning and hidden-test inference use the original fixed system/user messages without schema rules in the prompt.
+| Run | Status | Dev exact match | Mean field accuracy | JSON valid |
+|---|---|---:|---:|---:|
+| Base model, fixed prompt | Pending measurement | — | — | — |
+| Base model, rules-in-prompt reference | Pending measurement | — | — | — |
+| E1 raw, QLoRA rank 8 | In progress in captured screenshot | — | — | — |
+| E1 cleaned, QLoRA rank 8 | Pending | — | — | — |
+| E2 cleaned, FP16 LoRA rank 8 | Pending | — | — | — |
+| E3 cleaned, QLoRA rank 16 | Pending | — | — | — |
+| E4 cleaned, balanced QLoRA rank 8 | Pending | — | — | — |
 
-## C–D. Fine-tuning and controlled experiments
+The notebook contains five training configurations for four controlled comparisons: raw versus cleaned data, FP16 LoRA versus QLoRA, rank 8 versus rank 16, and ordinary versus category-balanced sampling. No baseline or dev accuracy is claimed until the corresponding evaluation completes. The previous failed attempt was caused by a CPU-only `bitsandbytes` build and an unavailable 8-bit optimizer symbol; the revised notebook checks CUDA/NF4 before training and uses the PyTorch AdamW optimizer. The live screenshot now shows the T4 runtime and a training progress bar, but final success is not yet established.
 
-The selected model is `Qwen/Qwen2.5-1.5B-Instruct`, an instruction model below the 4B parameter limit. The notebook uses the model's chat template and masks system/user prompt tokens so loss is applied to assistant target tokens only. The sequence cap is selected from the 95th percentile of tokenized training examples. The starting LoRA configuration uses rank 8, alpha 16, dropout 0.05, a learning rate of 2e-4, three epochs, micro-batch size 2, gradient accumulation 8 and paged 8-bit AdamW. The notebook checks that trainable parameters remain below 50 million.
+## D. Error analysis
 
-| Experiment | Controlled change | Dev exact match | Mean field accuracy | Peak GPU memory | Training minutes |
-|---|---|---:|---:|---:|---:|
-| E1a | Raw parseable labels, QLoRA rank 8 | **[Fill]** | **[Fill]** | **[Fill]** | **[Fill]** |
-| E1b | Cleaned labels, QLoRA rank 8 | **[Fill]** | **[Fill]** | **[Fill]** | **[Fill]** |
-| E2 | fp16 LoRA rank 8 vs E1b QLoRA | **[Fill]** | **[Fill]** | **[Fill]** | **[Fill]** |
-| E3 | QLoRA rank 16 vs E1b rank 8 | **[Fill]** | **[Fill]** | **[Fill]** | **[Fill]** |
-| E4 | Category-balanced vs ordinary sampling | **[Fill]** | **[Fill]** | **[Fill]** | **[Fill]** |
-
-Do not submit this report with placeholders. Replace every value with measurements from `experiment_results.csv` and `report_results.json`; explain any failed run honestly.
-
-## E. Error analysis
-
-After the best model is selected, the notebook reports the weakest fields and categories and writes development-set failures to `dev_error_analysis_first10.csv`. Add at least ten specific explanations here based on actual model outputs. Discuss whether each failure relates to category confusion, priority thresholds/legal threats, amount extraction/conversion, date normalization, transaction-ID normalization, channel extraction, Hinglish detection or repeat-contact detection. Do not present hypothetical examples as observed failures.
+The notebook is configured to create a development-set error-analysis file after a successful experiment. At least ten observed failures must be reviewed and explained using the actual predictions and gold labels. No hypothetical failures are presented here as measured findings. Complete this section from `dev_error_analysis_first10.csv` after evaluation.
 
 ## What I would do with one more week
 
-1. Add train-only examples for rare categories and difficult Hinglish/date/amount patterns, with strict schema validation.
-2. Add targeted adversarial cases for priority precedence and distracting non-transaction amounts.
-3. Compare another model under 4B parameters and test learning-rate or epoch changes while controlling other settings.
-4. Improve inference reliability through better training data and model selection, not output repair, constrained decoding or external APIs.
+1. Add carefully validated train-only examples for rare categories and difficult Hinglish, date, amount and priority-boundary cases.
+2. Run targeted adversarial checks for legal-threat precedence, fraud priority and distracting non-transaction amounts.
+3. Compare controlled model/optimizer/sequence-length settings while keeping other variables fixed.
+4. Improve reliability through better labelled examples and evaluation; do not repair model-generated JSON after inference.
 
 ## AI tools used
 
-ChatGPT assisted with interpreting the requirements, drafting/reviewing the data-cleaning and training notebook, and preparing the documentation structure. The notebook does not call an external LLM/API to create labels or predictions. All reported model results must come from the candidate's own Colab execution and must be reviewed and defended by the candidate.
+ChatGPT assisted with interpreting the assessment specification, preparing and debugging the notebook, explaining runtime errors and drafting/reviewing documentation. Training, model evaluation and test predictions are intended to be generated by the notebook in Colab. The candidate must inspect, verify and be able to explain all actual results before submission.
+
+> **Submission status:** This report is a progress report, not yet the final assessment report. Replace pending entries with measured results, add evidence-based error explanations, and include the final adapter and exactly 400 test predictions after the complete Colab run.
