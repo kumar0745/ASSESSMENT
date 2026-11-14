@@ -1,0 +1,18 @@
+# Original assessment pack contains train/dev/test data; never commit it.
+training_assessment.zip
+candidate_pack/
+data/
+*.jsonl
+!predictions_test.jsonl
+
+# Generated models, outputs and caches.
+adapter/
+outputs/
+work/
+experiments/
+checkpoints/
+.cache/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+nimbuspay_submission_artifacts.zip
